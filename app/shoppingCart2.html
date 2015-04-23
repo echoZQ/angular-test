@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app="cartApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>购物车-用模块</title>
+</head>
+<body ng-controller="CartCtrl">
+    <h1>购物车</h1>
+    <table>
+        <tr ng-repeat="item in items">
+            <td ng-bind="item.title"></td>
+            <td ng-bind="item.description"></td>
+            <td ng-bind="item.price | currency"></td>
+        </tr>
+    </table>
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript">
+    var cartApp = angular.module('cartApp', []);
+
+    cartApp.factory('Items', function () {
+        var items = {};
+        items.query = function () {
+            //从服务器端取数据
+            return [
+                {
+                    "title": "javascript权威指南",
+                    "description": "好书",
+                    "price": 87
+                },
+                {
+                    "title": "css权威指南",
+                    "description": "好书",
+                    "price": 56
+                },
+                {
+                    "title": "css禅意花园",
+                    "description": "好书",
+                    "price": 54
+                }
+            ]
+        };
+        return items;
+    });
+
+    cartApp.controller('CartCtrl', ['$scope', 'Items', function ($scope, Items) {
+        $scope.items = Items.query();
+    }]);
+</script>
+</body>
+</html>

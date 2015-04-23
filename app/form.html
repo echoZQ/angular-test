@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="formApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>form表单学习</title>
+</head>
+<body>
+    <!--复选框-->
+    <form ng-controller="SomeCtrl">
+        <input type="checkbox" ng-model="youCheckIt" />
+    </form>
+    <!--ng-change-->
+    <form ng-controller="StartUpCtrl">
+        开始: <input type="text" ng-model="startingEstimate">
+        计算: <span ng-bind="needed"></span>
+    </form>
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript">
+    var formApp = angular.module("formApp", []);
+    /**
+     * 复选框
+     */
+    formApp.controller('SomeCtrl', ['$scope', function ($scope) {
+        $scope.youCheckIt = true;
+    }]);
+    /**
+     * ng-change
+     */
+    formApp.controller('StartUpCtrl', ['$scope', function ($scope) {
+        $scope.startingEstimate = 0;
+        $scope.computeNeeded = function () {
+            $scope.needed = $scope.startingEstimate * 10;
+        };
+        //$watch 替代ng-change事件 监视startingEstimate是否变化
+        //$watch与on-change事件的区别：$watch不管什么途径修改了值，都会触发事件(多个输入框绑定一个属性的情景)
+        $scope.$watch('startingEstimate', $scope.computeNeeded);
+    }]);
+</script>
+</body>
+</html>

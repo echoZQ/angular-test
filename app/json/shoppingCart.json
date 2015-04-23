@@ -1,0 +1,17 @@
+[
+    {
+        "title": "javascript权威指南",
+        "description": "好书",
+        "price": 87
+    },
+    {
+        "title": "css权威指南",
+        "description": "好书",
+        "price": 56
+    },
+    {
+        "title": "css禅意花园",
+        "description": "好书",
+        "price": 54
+    }
+]

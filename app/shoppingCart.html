@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html ng-app="cartApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <style type="text/css">
+        table {
+            width: 600px;
+            border-spacing: 0;
+            padding-bottom: 20px;
+        }
+        th {
+            text-align: center;
+        }
+        td {
+            border: 1px solid #cecece;
+        }
+    </style>
+    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+</head>
+<body ng-controller="CartCtrl">
+    <p>您的购物车</p>
+    <table>
+        <tr>
+            <td>序号</td>
+            <td>书名</td>
+            <td>购买数量</td>
+            <td>单价</td>
+            <td>总价</td>
+            <td>操作</td>
+        </tr>
+        <tr ng-repeat="item in items">
+            <td>{{$index + 1}}</td>
+            <td>{{item.title}}</td>
+            <td><input ng-model='item.quantity' /></td>
+            <!--currency为angular自带的过滤器-->
+            <td>{{item.price | currency}}</td>
+            <td>{{item.price * item.quantity | currency}}</td>
+            <td><button ng-click="remove($index)">删除</button></td>
+        </tr>
+        <tr>
+            <td>总价</td>
+            <td colspan="5">{{totalCart | currency}}</td>
+        </tr>
+        <tr>
+            <td>折扣</td>
+            <td colspan="5">{{discount | currency}}</td>
+        </tr>
+        <tr>
+            <td>付费</td>
+            <td colspan="5">{{finalCart | currency}}</td>
+        </tr>
+    </table>
+    <button ng-click="add();">添加</button>
+<script type="text/javascript">
+    var cartApp = angular.module('cartApp', []);
+
+    cartApp.controller("CartCtrl", ["$scope", function($scope) {
+        $scope.items = [
+            {
+                "title": "javascript权威指南",
+                "price": "60",
+                "quantity": 3
+            },
+            {
+                "title": "css权威指南",
+                "price": "50",
+                "quantity": 4
+            },
+            {
+                "title": "如何编写可维护的javascript",
+                "price": "56",
+                "quantity": 6
+            }
+        ];
+
+        $scope.discount = 0;
+        /**
+         * 删除一条信息
+         * @param index
+         */
+        $scope.remove = function (index) {
+            $scope.items.splice(index, 1);
+        };
+
+        /**
+         * 添加一条信息
+         */
+        $scope.add = function () {
+            $scope.items.splice(0, 0, {
+                "title": "天才在左疯子在右",
+                "price": "20",
+                "quantity": 1
+            });
+        };
+        /**
+         * 使用$watch函数监控数组的变化 从而实时计算折扣及总价-转换一下思路
+         */
+        $scope.$watch('items', function () {
+            var total = 0;
+            var length = $scope.items.length;
+            for (var i = 0; i < length; i++) {
+                total += $scope.items[i].price * $scope.items[i].quantity;
+            }
+            $scope.totalCart = total;
+            $scope.discount = total > 1000 ? 0.01 * total : 0;
+            $scope.finalCart =  total - $scope.discount;
+        }, true); //true 监控对象或者数组时加上，不加没有效果
+    }]);
+</script>
+</body>
+</html>

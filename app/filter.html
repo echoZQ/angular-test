@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html ng-app="filterApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>filter test</title>
+</head>
+<body ng-controller="FilterCtrl">
+    <h2 ng-bind="title | titleCase"></h2>
+    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript">
+        var filterApp = angular.module('filterApp', []);
+
+        filterApp.filter('titleCase', function () {
+            //注意写法
+            return function (input) {
+                var words = input.split(' '),
+                    length = words.length,
+                    arr = [];
+                for(var i = 0; i < length; i++) {
+                    arr[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+                }
+                return arr.join(' ');
+            }
+        });
+
+        filterApp.controller('FilterCtrl', ['$scope', function ($scope) {
+            $scope.title = "an apple a day keeps a doctor away";
+        }]);
+    </script>
+</body>
+</html>
