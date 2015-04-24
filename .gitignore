@@ -1,4 +1,4 @@
 .idea
 .project
-.iml
+*.iml
 app/bower_components

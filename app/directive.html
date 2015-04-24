@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="directiveApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>编写自定义的指令</title>
+</head>
+<body ng-controller="DirectiveCtrl">
+    <button ng-click="clickUnFocused();">没有点击我</button>
+    <button ngbk-focus ng-click="clickFocused();">点击了我</button>
+    <div ng-bind="text"></div>
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript">
+    var directiveApp = angular.module('directiveApp', []);
+
+    /**
+     * 自定义指令
+     * 注意写法 html中ngbk-focus 此处ngbkFocus
+     */
+    directiveApp.directive("ngbkFocus", function () {
+        return {
+            link: function(scope, element) {
+                element[0].focus();
+            }
+        }
+    });
+
+    directiveApp.controller("DirectiveCtrl", ['$scope', function ($scope) {
+        $scope.text = "点击了我";
+
+        $scope.clickFocused = function () {
+            $scope.text = "点击了我";
+        };
+        $scope.clickUnFocused = function () {
+            $scope.text = "没有点击我";
+        };
+    }]);
+</script>
+</body>
+</html>

@@ -14,6 +14,18 @@
         开始: <input type="text" ng-model="startingEstimate">
         计算: <span ng-bind="needed"></span>
     </form>
+
+    <h1>注册</h1>
+    <form name="addUserForm" ng-controller="AddUserController">
+        <div ng-show="message" ng-bind="message"></div>
+        <div>用户名: <input type="text" name="username" ng-model="user.username" required></div>
+        <div>电子邮箱: <input type="email" ng-model="user.model" required></div>
+        <div>年龄: <input type="number" ng-model="user.age" ng-maxlength="3" ng-min="1"></div>
+        <div>
+            <!--$valid属性可以获得表单验证状态-->
+            <button ng-click="addUser();" ng-disabled="!addUserForm.$valid">提交</button>
+        </div>
+    </form>
 <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
 <script type="text/javascript">
     var formApp = angular.module("formApp", []);
@@ -34,6 +46,17 @@
         //$watch 替代ng-change事件 监视startingEstimate是否变化
         //$watch与on-change事件的区别：$watch不管什么途径修改了值，都会触发事件(多个输入框绑定一个属性的情景)
         $scope.$watch('startingEstimate', $scope.computeNeeded);
+    }]);
+
+    /**
+     * 添加用户
+     */
+    formApp.controller('AddUserController', ["$scope", function ($scope) {
+        $scope.message = "";
+
+        $scope.addUser = function () {
+            $scope.message = "ok";
+        }
     }]);
 </script>
 </body>
